@@ -1,5 +1,6 @@
 import argparse
 from PIL import Image
+import numpy as np
 import torch
 from torchvision.transforms import functional as TF
 
@@ -16,11 +17,11 @@ def get_args():
 def test():
     args = get_args()
 
-    model = torch.load('md.pt', 'cpu').eval()
+    model = torch.load(args.model, 'cpu').eval()
     img = Image.open(args.img)
     x = TF.resize(img, (224, 224))
     x = TF.to_tensor(x)[None]
-    exposure = round(model(x).item(), 4)
+    exposure = np.clip(round(model(x).item(), 4), -1, 1)
     print(f'exposure:', exposure)
 
 
