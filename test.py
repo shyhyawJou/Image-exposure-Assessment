@@ -10,6 +10,7 @@ def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-img', help='image path')
     parser.add_argument('-model', help='model path')
+    parser.add_argument('-device', help='cpu | cuda')
     args = parser.parse_args()
     return args
 
@@ -17,10 +18,10 @@ def get_args():
 def test():
     args = get_args()
 
-    model = torch.load(args.model, 'cpu').eval()
+    model = torch.load(args.model, args.device).eval()
     img = Image.open(args.img)
     x = TF.resize(img, (224, 224))
-    x = TF.to_tensor(x)[None]
+    x = TF.to_tensor(x).to(args.device)[None]
     exposure = np.clip(round(model(x).item(), 4), -1, 1)
     print(f'exposure:', exposure)
 
