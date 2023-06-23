@@ -15,5 +15,5 @@ python train.py -tr synthetic -test real/ -tr_txt synthetic-scores.txt -test_txt
 
 # Test
 ```
-python test.py -img img/cat_1.jpg -model {model path}
+python test.py -img img/cat_1.jpg -model {model path} -device cpu
 ```
